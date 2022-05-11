@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/auth-db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  kafka:
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-256
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="ZGFzaGluZy1yYXktOTMyNyRi8JVqQyFuA5_6OhFjd2tYvu_3WflTauc0FxI54Uw" password="YcClpJLJCktQXlpqK8VfzQXSGHyXePE8s8FKemYyurpZV2wdZZfZp1-ZI0xHgglxlwS0Dg==";
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    bootstrap-servers: dashing-ray-9327-eu1-kafka.upstash.io:9092
+server:
+  port: 3000
+
+
+auth-server:
+  app:
+    jwtSecret: secret-key
+    jwtExpirationMs: 86400000
