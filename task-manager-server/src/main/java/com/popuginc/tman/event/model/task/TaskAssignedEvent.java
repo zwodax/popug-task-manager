@@ -16,7 +16,7 @@ public class TaskAssignedEvent extends GenericEvent<Payload> {
   @Builder
   public static class Payload {
 
-    private UUID taskId;
-    private UUID assignedTo;
+    private UUID publicTaskId;
+    private UUID publicAssignerId;
   }
 }

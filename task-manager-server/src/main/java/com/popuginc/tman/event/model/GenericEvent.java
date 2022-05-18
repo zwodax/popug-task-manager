@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public abstract class GenericEvent<T>  {
 
-  private final String eventType;
+  private final String eventName;
 
   private final T data;
 }

@@ -20,12 +20,12 @@ public class AccountEventListener {
   @Transactional
   public void handleAccountEvent(String event) {
     JSONObject jsonObject = new JSONObject(event);
-    String eventType = jsonObject.getString("eventType");
+    String eventName = jsonObject.getString("eventName");
     JSONObject data = jsonObject.getJSONObject("data");
 
-    if (Objects.equals(eventType, "Accounts.Created")) {
+    if (Objects.equals(eventName, "Accounts.Created")) {
       handleAccountsCreated(data);
-    } else if (Objects.equals(eventType, "Accounts.RoleChanged")) {
+    } else if (Objects.equals(eventName, "Accounts.RoleChanged")) {
       handleRoleChanged(data);
     }
   }
@@ -39,13 +39,13 @@ public class AccountEventListener {
   }
 
   private void handleAccountsCreated(JSONObject jsonObject) {
-    String userId = jsonObject.getString("id");
+    String publicId = jsonObject.getString("publicId");
     String email = jsonObject.getString("email");
     String role = jsonObject.getString("role");
     String username = jsonObject.getString("username");
 
     User user = User.builder()
-        .publicId(UUID.fromString(userId))
+        .publicId(UUID.fromString(publicId))
         .email(email)
         .role(role)
         .username(username)

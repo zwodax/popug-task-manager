@@ -42,7 +42,7 @@ public class UserService {
     user.setRole(role);
 
     AccountRoleChanged accountRoleChanged = new AccountRoleChanged(
-        RoleChangedPayload.builder().userId(user.getPublicId())
+        RoleChangedPayload.builder().publicId(user.getPublicId())
             .role(role).build());
 
     accountsStream.send("accounts-stream", userId, accountRoleChanged);

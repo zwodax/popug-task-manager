@@ -18,7 +18,7 @@ public class AccountRoleChanged extends GenericEvent<RoleChangedPayload> {
   @Builder
   public static final class RoleChangedPayload {
 
-    private final UUID userId;
+    private final UUID publicId;
     private final Role role;
   }
 }

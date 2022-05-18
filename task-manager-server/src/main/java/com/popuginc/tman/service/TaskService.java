@@ -66,16 +66,17 @@ public class TaskService {
         .build());
 
     TaskAssignedEvent.Payload taskAssignedPayload = TaskAssignedEvent.Payload.builder()
-        .taskId(savedTask.getPublicId())
-        .assignedTo(userPublicId)
+        .publicTaskId(savedTask.getPublicId())
+        .publicAssignerId(userPublicId)
         .build();
 
     TaskAssignedEvent taskAssignedEvent = new TaskAssignedEvent(taskAssignedPayload);
 
     taskCreatedTemplate.send("tasks-stream", savedTask.getPublicId(), taskCreatedEvent);
-    taskAssignedTemplate.send("tasks-stream", savedTask.getPublicId(), taskAssignedEvent);
+    taskAssignedTemplate.send("task-lifecycle", savedTask.getPublicId(), taskAssignedEvent);
   }
 
+  // TODO Batch send to Kafka
   @Transactional
   public void shuffleTasks() {
     List<User> developers = userRepository.findAllByRole("ROLE_USER");
@@ -93,12 +94,12 @@ public class TaskService {
       task.setAssignedUser(randomDeveloper);
 
       TaskAssignedEvent.Payload taskAssignedPayload = TaskAssignedEvent.Payload.builder()
-          .taskId(task.getPublicId())
-          .assignedTo(randomDeveloper.getPublicId())
+          .publicTaskId(task.getPublicId())
+          .publicAssignerId(randomDeveloper.getPublicId())
           .build();
 
       TaskAssignedEvent taskAssignedEvent = new TaskAssignedEvent(taskAssignedPayload);
-      taskAssignedTemplate.send(TASKS_STREAM, taskAssignedEvent.getData().getTaskId(),
+      taskAssignedTemplate.send("task-lifecycle", taskAssignedEvent.getData().getPublicTaskId(),
           taskAssignedEvent);
     }
   }
@@ -119,7 +120,7 @@ public class TaskService {
         .build();
 
     TaskCompletedEvent taskCompletedEvent = new TaskCompletedEvent(payload);
-    taskCompletedTemplate.send("tasks-stream",
+    taskCompletedTemplate.send("task-lifecycle",
         taskCompletedEvent.getData().getTaskId(), taskCompletedEvent);
   }
 
