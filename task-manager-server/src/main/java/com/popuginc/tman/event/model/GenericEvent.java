@@ -1,0 +1,13 @@
+package com.popuginc.tman.event.model;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
+public abstract class GenericEvent<T>  {
+
+  private final String eventName;
+
+  private final T data;
+}
